@@ -1,1 +1,1 @@
-TA-Overlay
+Tournament Assistant stream Overlay to be used with my discord bot "BeatSaberRankBot" as middleware
