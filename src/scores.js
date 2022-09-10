@@ -1,8 +1,9 @@
 import React from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import ReactDOM from "react-dom";
+import config from "./config.json"
 
-const client = new W3CWebSocket("ws://127.0.0.1:2223");
+const client = new W3CWebSocket(config.realyServerUrl);
 
 class Scores extends React.Component {
   constructor(props) {
