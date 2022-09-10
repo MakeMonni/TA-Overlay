@@ -1,0 +1,37 @@
+#songName {
+  font-size: 25px;
+}
+
+#outer {
+    display: flex;
+}
+
+#coverImg
+{
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+}
+
+#songInfo{
+    /*background-color: black;*/
+    padding-left: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 18px;
+    color: white;
+    text-shadow: 2px 1px black;
+}
+
+#njsnps
+{
+    font-style: bold;
+    font-family: Lucida Console;
+}
+
+#lengthbpm{
+
+    font-style: bold;
+    font-family: Lucida Console;
+}

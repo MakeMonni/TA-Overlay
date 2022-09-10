@@ -1,12 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './song.css'
+import Song from './song'
+import './scores.css';
+import Scores from './scores';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+export default function App() {
+  return (
+  
+    <BrowserRouter>
+      <Routes>
+        
+          <Route path="song" element={<Song />} />
+          <Route path="scores" element={<Scores />} />
+      </Routes>
+    </BrowserRouter>)
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App/>
   </React.StrictMode>,
   document.getElementById('root')
 );

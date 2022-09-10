@@ -2,14 +2,15 @@ import React from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import ReactDOM from "react-dom";
 
-const client = new W3CWebSocket("ws://127.0.0.1:8000");
+const client = new W3CWebSocket("ws://127.0.0.1:2223");
 
-class App extends React.Component {
+class Scores extends React.Component {
   constructor(props) {
     super(props);
     this.componentWillMount = this.componentWillMount.bind(this);
     this.state = {
       players: [],
+      currentHash: ""
     };
   }
 
@@ -18,14 +19,10 @@ class App extends React.Component {
       console.log("WebSocket Client Connected");
     };
     client.onmessage = (message) => {
-      const msgJSON = JSON.parse(message.data);
-      if (msgJSON.type === "mapChange") {
-        const emptyArr = []
-        this.setState({ players: emptyArr })
-      }
-      else {
+      const msgJSON = JSON.parse(message.data)
+      console.log(msgJSON)
+      if (msgJSON.Type === "4") {
         let scores = this.state.players;
-
         const index = scores.findIndex(
           (player) => player.playerId === msgJSON.playerId
         );
@@ -36,9 +33,20 @@ class App extends React.Component {
         scores.sort(function (a, b) {
           return b.acc - a.acc;
         });
-
-        console.log({ msgJSON, scores, index });
         this.setState({ players: scores });
+      }
+      if (msgJSON.Type === "1") {
+        console.log("Match created");
+        this.setState({ players: [] })
+      }
+      if (msgJSON.Type === "2") {
+        console.log("Match deleted");
+        this.setState({ players: [] })
+        this.forceUpdate()
+      }
+      if (msgJSON.Type === "3") {
+        this.setState({ currentHash: msgJSON.LevelId })
+        this.setState({ players: [] })
       }
     };
   }
@@ -68,7 +76,15 @@ class Score extends React.Component {
     return (
       <div id="player">
         {pos}.
-        <img src={`https://cdn.scoresaber.com/avatars/${playerId}.jpg`} alt={playerId} width="40" height="40" />
+        <img
+          src={`https://cdn.scoresaber.com/avatars/${playerId}.jpg`}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src="https://cdn.scoresaber.com/avatars/oculus.png";
+          }}
+          alt="."
+          width="40"
+          height="40" />
         <div id="playerInfo">
           <div id="playerNameAcc"><div>{playerName}</div>  <div>{(Math.round(acc * 100 * 100) / 100).toFixed(2)}%</div></div>
           <div id="playerScoreCombo"> <div>{score}</div> <div>x{combo}</div></div>
@@ -80,6 +96,6 @@ class Score extends React.Component {
 
 <body id="root"></body>;
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+ReactDOM.render(<Scores></Scores>, document.getElementById("root"));
 
-export default App;
+export default Scores;
